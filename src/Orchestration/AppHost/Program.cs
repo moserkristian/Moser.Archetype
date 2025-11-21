@@ -1,3 +1,5 @@
+using Anima.Blueprint.Catalog.Infrastructure;
+
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 
@@ -7,6 +9,7 @@ public static class Program
 {
     public const string PostgresContainerName = "platform-postgres-container";
     public const string PostgresDbName = "postgres-db";
+    public const string CatalogApiName = "catalog-api";
 
     static void Main(string[] args)
     {
@@ -44,6 +47,6 @@ public static class Program
 
     public static IResourceBuilder<PostgresDatabaseResource> AddPostgresDb(IResourceBuilder<PostgresServerResource> postgresContainer)
     {
-        return postgresContainer.AddDatabase(PostgresDbName, Anima.Blueprint.Catalog.Infrastructure.FakeDbContext.DbName);
+        return postgresContainer.AddDatabase(PostgresDbName, FakeDbContext.DbName);
     }
 }

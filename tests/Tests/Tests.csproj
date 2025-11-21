@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Orchestration\AppHost\AppHost.csproj" />
+    <ProjectReference Include="..\..\src\Orchestration\AppHost\AppHost.csproj" IsAspireProjectResource="false"/>
   </ItemGroup>
 
   <ItemGroup>

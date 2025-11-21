@@ -41,7 +41,7 @@ public class DistributedAppTestFixture : IAsyncLifetime
         await _distributedApp.StartAsync();
 
         await ResourceNotificationService
-            .WaitForResourceAsync(AppHost.Program.UsersRegistryApiName, KnownResourceStates.Running)
+            .WaitForResourceAsync(AppHost.Program.CatalogApiName, KnownResourceStates.Running)
             .WaitAsync(TimeSpan.FromSeconds(30));
 
         HttpClient = BuildCertBypassHttpClient();
@@ -56,7 +56,7 @@ public class DistributedAppTestFixture : IAsyncLifetime
 
     private HttpClient BuildCertBypassHttpClient()
     {
-        var baseAddress = _distributedApp?.GetEndpoint(AppHost.Program.UsersRegistryApiName, "https");
+        var baseAddress = _distributedApp?.GetEndpoint(AppHost.Program.CatalogApiName, "https");
 
         var handler = new HttpClientHandler
         {
@@ -72,7 +72,7 @@ public class DistributedAppTestFixture : IAsyncLifetime
 
     private HttpClient BuildDistributedAppHttpClient()
     {
-        var httpClient = _distributedApp?.CreateHttpClient(AppHost.Program.UsersRegistryApiName);
+        var httpClient = _distributedApp?.CreateHttpClient(AppHost.Program.CatalogApiName);
         httpClient!.Timeout = TimeSpan.FromMinutes(3);
         return httpClient;
     }
