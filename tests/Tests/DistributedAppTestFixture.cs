@@ -2,6 +2,8 @@ using Aspire.Hosting;
 
 using Microsoft.Extensions.Configuration;
 
+using Projects;
+
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -23,10 +25,22 @@ public class DistributedAppTestFixture : IAsyncLifetime
     public HttpClient? HttpClient { get; private set; }
     public JsonSerializerOptions? JsonSerializerOptions { get; private set; }
 
+    public HttpClient? _httpClient { get; private set; }
+
     public async Task InitializeAsync()
     {
         var distributedApplicationTestingBuilder = await DistributedApplicationTestingBuilder
             .CreateAsync<Projects.AppHost>();
+
+        var isCI = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "CI";
+        distributedApplicationTestingBuilder.Services.Configure<DistributedApplicationOptions>(options =>
+        {
+            if (isCI)
+            {
+                options.DisableDashboard = true;
+            }
+        });
+
 
         //Resources = distributedApplicationTestingBuilder.Resources
         //    .Remove(r => r.Name == AppHost.Program.DeviceRegistryApiName)
@@ -52,6 +66,17 @@ public class DistributedAppTestFixture : IAsyncLifetime
         };
 
         //?Client = new ?ApiClient(this);
+
+        var endpoint = _distributedApp.GetEndpoint("webfrontend");
+        if (isCI)
+        {
+            endpoint = new UriBuilder(endpoint)
+            {
+                Scheme = "http",
+                Port = endpoint.Port
+            }.Uri;
+        }
+        _httpClient = new HttpClient { BaseAddress = endpoint };
     }
 
     private HttpClient BuildCertBypassHttpClient()

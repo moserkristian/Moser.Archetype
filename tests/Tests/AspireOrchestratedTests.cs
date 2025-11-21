@@ -9,7 +9,7 @@ public class AspireOrchestratedTests(DistributedAppTestFixture fixture)
     public async Task HealthCheck_ValidRequest_ShouldReturnResponse()
     {
         // Act
-        var response = await fixture.HttpClient!.GetAsync("/");
+        var response = await fixture._httpClient!.GetAsync("/");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

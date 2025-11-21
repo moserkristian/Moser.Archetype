@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, develop]
 
+env:
+  IMAGE_PREFIX: ${{ github.repository_owner }}/anima-blueprint
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -29,6 +32,9 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build --configuration Release --verbosity normal
+        env:
+          ASPNETCORE_ENVIRONMENT: CI
+          DOTNET_ENVIRONMENT: CI
 
   docker-build:
     needs: build-and-test
