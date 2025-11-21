@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Anima.Blueprint.Catalog.Application.Commands.CreateProduct;
 
-namespace Catalog.Application.Commands.CreateProduct
+internal class CreateProductCommand
 {
-    internal class CreateProductCommand
-    {
-    }
+
 }

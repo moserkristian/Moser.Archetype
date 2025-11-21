@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Moser.Solutions.Blueprint.Tests;
+namespace Anima.Blueprint.Tests;
 
 public class WebTests
 {

@@ -1,9 +1,10 @@
+using Anima.Blueprint.Components;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Web;
-using Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

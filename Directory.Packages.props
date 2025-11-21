@@ -7,7 +7,7 @@
     <!-- <PackageVersion Include="Nuget.Package.Name" Version="0.0.0" /> -->
     <!-- => in .csproj: <PackageReference Include="Nuget.Package.Name" /> -->
   </ItemGroup>
-  <ItemGroup Label="Moser.BuildingBlocks.Infrastructure">
+  <ItemGroup Label="BuildingBlocks.Infrastructure">
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup Label=".Infrastructure">

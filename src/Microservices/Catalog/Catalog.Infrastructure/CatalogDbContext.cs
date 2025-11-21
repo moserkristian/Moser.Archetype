@@ -1,10 +1,10 @@
-using Catalog.Domain.AggregatesModel.ProductAggregate;
+using Anima.Blueprint.Catalog.Domain.AggregatesModel.ProductAggregate;
 
 using Microsoft.EntityFrameworkCore;
 
-using Moser.BuildingBlocks.Infrastructure.Persistence;
+using Anima.Blueprint.BuildingBlocks.Infrastructure.Persistence;
 
-namespace Catalog.Infrastructure;
+namespace Anima.Blueprint.Catalog.Infrastructure;
 
 internal class CatalogDbContext : DbContextBase
 {

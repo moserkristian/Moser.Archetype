@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Anima.Blueprint.Catalog.Application.Queries;
 
-namespace Catalog.Application.Queries
+internal class GetProducts
 {
-    internal class GetProducts
-    {
-    }
+
 }

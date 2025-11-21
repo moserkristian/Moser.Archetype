@@ -1,7 +1,7 @@
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 
-namespace Moser.Solutions.Blueprint.AppHost;
+namespace Anima.Blueprint.AppHost;
 
 public static class Program
 {
@@ -44,6 +44,6 @@ public static class Program
 
     public static IResourceBuilder<PostgresDatabaseResource> AddPostgresDb(IResourceBuilder<PostgresServerResource> postgresContainer)
     {
-        return postgresContainer.AddDatabase(PostgresDbName, PostgresDbContext.DbName);
+        return postgresContainer.AddDatabase(PostgresDbName, Anima.Blueprint.Catalog.Infrastructure.FakeDbContext.DbName);
     }
 }

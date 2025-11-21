@@ -1,4 +1,4 @@
-namespace Catalog.Domain.AggregatesModel.ProductAggregate;
+namespace Anima.Blueprint.Catalog.Domain.AggregatesModel.ProductAggregate;
 
 internal class ProductSpecification
 {

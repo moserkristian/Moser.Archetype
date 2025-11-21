@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 
+namespace Anima.Blueprint.Catalog.API;
+
 internal class Program
 {
     private static void Main(string[] args)

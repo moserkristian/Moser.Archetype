@@ -1,6 +1,6 @@
-using Moser.BuildingBlocks.Infrastructure.Persistence;
+using Anima.Blueprint.BuildingBlocks.Infrastructure.Persistence;
 
-namespace Catalog.Infrastructure;
+namespace Anima.Blueprint.Catalog.Infrastructure;
 
 internal class UnitOfWork : UnitOfWorkBase<CatalogDbContext>
 {
