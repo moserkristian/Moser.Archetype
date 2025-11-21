@@ -7,6 +7,16 @@
     <!-- <PackageVersion Include="Nuget.Package.Name" Version="0.0.0" /> -->
     <!-- => in .csproj: <PackageReference Include="Nuget.Package.Name" /> -->
   </ItemGroup>
+  <ItemGroup Label="Moser.BuildingBlocks.Infrastructure">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup Label=".Infrastructure">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageVersion>
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
   <ItemGroup Label="Tests">
     <PackageVersion Include="Aspire.Hosting.Testing" Version="13.0.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
@@ -28,9 +38,6 @@
   </ItemGroup>
   <ItemGroup Label="Example.Application">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-  </ItemGroup>
-  <ItemGroup Label="Example.Infrastructure">
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup Label="Web">
     <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="13.0.0" />

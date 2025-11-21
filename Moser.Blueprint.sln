@@ -75,13 +75,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moser.BuildingBlocks.Domain", "src\BuildingBlocks\Moser.BuildingBlocks.Domain\Moser.BuildingBlocks.Domain.csproj", "{02C70B9C-3E73-4EEC-B877-757CE00128FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Domain", "src\BuildingBlocks\Moser.BuildingBlocks.Domain\BuildingBlocks.Domain.csproj", "{02C70B9C-3E73-4EEC-B877-757CE00128FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moser.BuildingBlocks.Application", "src\BuildingBlocks\Moser.BuildingBlocks.Application\Moser.BuildingBlocks.Application.csproj", "{91CABDF6-538B-4BDE-83E4-837ECDA83A79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Application", "src\BuildingBlocks\Moser.BuildingBlocks.Application\BuildingBlocks.Application.csproj", "{91CABDF6-538B-4BDE-83E4-837ECDA83A79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moser.BuildingBlocks.Infrastructure", "src\BuildingBlocks\Moser.BuildingBlocks.Infrastructure\Moser.BuildingBlocks.Infrastructure.csproj", "{F1AD29CC-AE95-480E-A24A-AA40FBB8A2C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Infrastructure", "src\BuildingBlocks\Moser.BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj", "{F1AD29CC-AE95-480E-A24A-AA40FBB8A2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moser.BuildingBlocks.API", "src\BuildingBlocks\Moser.BuildingBlocks.API\Moser.BuildingBlocks.API.csproj", "{838D40A8-7464-4557-9F46-6F7B6875179C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.API", "src\BuildingBlocks\Moser.BuildingBlocks.API\BuildingBlocks.API.csproj", "{838D40A8-7464-4557-9F46-6F7B6875179C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{EA1DAE95-0EB5-4BB0-AF89-5BA7663D9DA3}"
 EndProject
