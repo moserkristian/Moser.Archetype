@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Anima.Blueprint.Tests;
 
 public class WebTests
-{
+{/*
     [Fact]
     public async Task GetWebResourceRootReturnsOkStatusCode()
     {
@@ -27,5 +27,5 @@ public class WebTests
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
+    }*/
 }

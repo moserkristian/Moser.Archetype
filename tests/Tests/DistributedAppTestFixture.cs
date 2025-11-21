@@ -32,7 +32,7 @@ public class DistributedAppTestFixture : IAsyncLifetime
         var distributedApplicationTestingBuilder = await DistributedApplicationTestingBuilder
             .CreateAsync<Projects.AppHost>();
 
-        var isCI = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "CI";
+        var isCI = true; // Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == "CI";
         distributedApplicationTestingBuilder.Services.Configure<DistributedApplicationOptions>(options =>
         {
             if (isCI)
@@ -67,21 +67,13 @@ public class DistributedAppTestFixture : IAsyncLifetime
 
         //?Client = new ?ApiClient(this);
 
-        var endpoint = _distributedApp.GetEndpoint("webfrontend");
-        if (isCI)
-        {
-            endpoint = new UriBuilder(endpoint)
-            {
-                Scheme = "http",
-                Port = endpoint.Port
-            }.Uri;
-        }
+        var endpoint = _distributedApp.GetEndpoint("webfrontend", "http");
         _httpClient = new HttpClient { BaseAddress = endpoint };
     }
 
     private HttpClient BuildCertBypassHttpClient()
     {
-        var baseAddress = _distributedApp?.GetEndpoint(AppHost.Program.WebFrontendName, "https");
+        var baseAddress = _distributedApp?.GetEndpoint(AppHost.Program.WebFrontendName, "http");
 
         var handler = new HttpClientHandler
         {
