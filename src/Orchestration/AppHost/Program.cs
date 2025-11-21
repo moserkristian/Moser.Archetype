@@ -10,6 +10,7 @@ public static class Program
     public const string PostgresContainerName = "platform-postgres-container";
     public const string PostgresDbName = "postgres-db";
     public const string CatalogApiName = "catalog-api";
+    public const string WebFrontendName = "webfrontend";
 
     static void Main(string[] args)
     {
