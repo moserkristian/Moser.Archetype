@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Anima.BuildingBlocks.Application;
+namespace Anima.Blueprint.BuildingBlocks.Application;
 
 public interface IUnitOfWork
 {

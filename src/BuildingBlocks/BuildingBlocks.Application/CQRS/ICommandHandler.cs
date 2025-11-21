@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace Anima.Blueprint.BuildingBlocks.Application;
 
-namespace Anima.BuildingBlocks.Application;
 internal interface ICommandHandler
 {
+
 }
