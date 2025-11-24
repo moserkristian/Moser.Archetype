@@ -46,7 +46,13 @@ jobs:
     
     strategy:
       matrix:
-        service: [Catalog]
+        include:
+          - service: Catalog
+            type: api
+            path: src/Microservices/Catalog/Catalog.API
+          - service: Web
+            type: web
+            path: src/Web
     
     steps:
       - name: Checkout source
@@ -63,18 +69,26 @@ jobs:
         run: |
           SERVICE_LOWER=$(echo "${{ matrix.service }}" | tr '[:upper:]' '[:lower:]')
           
-          echo "Building ${SERVICE_LOWER}-api..."
+          if [ "${{ matrix.type }}" = "api" ]; then
+            IMAGE_NAME="${SERVICE_LOWER}-api"
+            DOCKERFILE="src/Microservices/${{ matrix.service }}/${{ matrix.service }}.API/Dockerfile"
+          else
+            IMAGE_NAME="${SERVICE_LOWER}"
+            DOCKERFILE="src/Web/Dockerfile"
+          fi
+          
+          echo "Building ${IMAGE_NAME}..."
           
           docker build \
             --build-arg SERVICE_NAME=${{ matrix.service }} \
-            -t ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:${{ github.sha }} \
-            -t ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:latest \
-            -f src/Microservices/${{ matrix.service }}/${{ matrix.service }}.API/Dockerfile \
+            -t ghcr.io/${{ env.IMAGE_PREFIX }}/${IMAGE_NAME}:${{ github.sha }} \
+            -t ghcr.io/${{ env.IMAGE_PREFIX }}/${IMAGE_NAME}:latest \
+            -f ${DOCKERFILE} \
             .
           
-          echo "Pushing ${SERVICE_LOWER}-api..."
-          docker push ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:${{ github.sha }}
-          docker push ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:latest
+          echo "Pushing ${IMAGE_NAME}..."
+          docker push ghcr.io/${{ env.IMAGE_PREFIX }}/${IMAGE_NAME}:${{ github.sha }}
+          docker push ghcr.io/${{ env.IMAGE_PREFIX }}/${IMAGE_NAME}:latest
 
   deploy:
     needs: docker-build
@@ -82,7 +96,13 @@ jobs:
     
     strategy:
       matrix:
-        service: [Catalog]
+        include:
+          - service: Catalog
+            type: api
+            port: 8080
+          - service: Web
+            type: web
+            port: 8080
     
     steps:
       - name: Login to Azure
@@ -94,33 +114,39 @@ jobs:
         run: |
           SERVICE_LOWER=$(echo "${{ matrix.service }}" | tr '[:upper:]' '[:lower:]')
           
+          if [ "${{ matrix.type }}" = "api" ]; then
+            APP_NAME="${SERVICE_LOWER}-api"
+          else
+            APP_NAME="${SERVICE_LOWER}"
+          fi
+          
           if az containerapp show \
-              --name ${SERVICE_LOWER}-api \
+              --name ${APP_NAME} \
               --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
               &>/dev/null; then
             
-            echo "🔄 Updating ${SERVICE_LOWER}-api..."
+            echo "🔄 Updating ${APP_NAME}..."
 
             az containerapp registry set \
-            --name ${SERVICE_LOWER}-api \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --server ghcr.io \
-            --username ${{ github.actor }} \
-            --password ${{ secrets.GHCR_TOKEN }}
+              --name ${APP_NAME} \
+              --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+              --server ghcr.io \
+              --username ${{ github.actor }} \
+              --password ${{ secrets.GHCR_TOKEN }}
 
             az containerapp update \
-              --name ${SERVICE_LOWER}-api \
+              --name ${APP_NAME} \
               --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-              --image ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:latest
+              --image ghcr.io/${{ env.IMAGE_PREFIX }}/${APP_NAME}:latest
             
           else
-            echo "🆕 Creating ${SERVICE_LOWER}-api..."
+            echo "🆕 Creating ${APP_NAME}..."
             az containerapp create \
-              --name ${SERVICE_LOWER}-api \
+              --name ${APP_NAME} \
               --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
               --environment ${{ secrets.AZURE_CONTAINER_ENV }} \
-              --image ghcr.io/${{ env.IMAGE_PREFIX }}/${SERVICE_LOWER}-api:latest \
-              --target-port 8080 \
+              --image ghcr.io/${{ env.IMAGE_PREFIX }}/${APP_NAME}:latest \
+              --target-port ${{ matrix.port }} \
               --ingress external \
               --min-replicas 0 \
               --max-replicas 1 \
@@ -135,10 +161,16 @@ jobs:
         run: |
           SERVICE_LOWER=$(echo "${{ matrix.service }}" | tr '[:upper:]' '[:lower:]')
           
+          if [ "${{ matrix.type }}" = "api" ]; then
+            APP_NAME="${SERVICE_LOWER}-api"
+          else
+            APP_NAME="${SERVICE_LOWER}"
+          fi
+          
           FQDN=$(az containerapp show \
-            --name ${SERVICE_LOWER}-api \
+            --name ${APP_NAME} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --query "properties.configuration.ingress.fqdn" \
             -o tsv)
           
-          echo "${{ matrix.service }} API: https://${FQDN}"
+          echo "${{ matrix.service }}: https://${FQDN}"
