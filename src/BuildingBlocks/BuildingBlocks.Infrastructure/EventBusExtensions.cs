@@ -2,35 +2,81 @@ using Anima.Blueprint.BuildingBlocks.Application.Events;
 using Anima.Blueprint.BuildingBlocks.Infrastructure.EventBus;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 using System.Linq;
 using System.Reflection;
 
-namespace Anima.Blueprint;
+namespace Anima.Blueprint.BuildingBlocks.Infrastructure;
 
 public static class EventBusExtensions
 {
-    public static IServiceCollection AddEventBus(this IServiceCollection services, Assembly assembly)
+    public static IServiceCollection AddInMemoryEventBus(
+        this IServiceCollection services,
+        Assembly assembly)
     {
-        // Development: In-memory
         services.AddScoped<IEventBus, InMemoryEventBus>();
-
-        // Production: Azure Queue (switch via config)
-        // services.AddSingleton<IEventBus>(sp => 
-        //     new AzureQueueEventBus(config["StorageQueue"], "events"));
-
-        // Register handlers
-        var handlers = assembly.GetTypes()
-            .Where(t => t.GetInterfaces()
-                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>)));
-
-        foreach (var handler in handlers)
-        {
-            var iface = handler.GetInterfaces()
-                .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>));
-            services.AddScoped(iface, handler);
-        }
-
+        RegisterHandlers(services, assembly);
         return services;
+    }
+
+    public static IServiceCollection AddAzureStorageQueueEventBus(
+        this IServiceCollection services,
+        IConfiguration config,
+        Assembly assembly)
+    {
+        services.AddSingleton<IEventBus>(sp => new Blueprint.EventBus.AzureStorageQueueEventBus(
+            config.GetConnectionString("StorageQueue")!,
+            config["EventBus:QueueName"] ?? "events"));
+        RegisterHandlers(services, assembly);
+        return services;
+    }
+
+    public static IServiceCollection AddAzureServiceBusEventBus(
+        this IServiceCollection services,
+        IConfiguration config,
+        Assembly assembly)
+    {
+        services.AddSingleton<IEventBus>(sp => new AzureServiceBus(
+            config.GetConnectionString("ServiceBus")!,
+            config["EventBus:TopicName"] ?? "events"));
+        RegisterHandlers(services, assembly);
+        return services;
+    }
+
+    public static IServiceCollection AddAzureEventGridEventBus(
+        this IServiceCollection services,
+        IConfiguration config,
+        Assembly assembly)
+    {
+        services.AddSingleton<IEventBus>(sp => new AzureEventGridEventBus(
+            config["EventGrid:Endpoint"]!,
+            config["EventGrid:AccessKey"]!));
+        RegisterHandlers(services, assembly);
+        return services;
+    }
+
+    public static IServiceCollection AddAzureEventHubsEventBus(
+        this IServiceCollection services,
+        IConfiguration config,
+        Assembly assembly)
+    {
+        services.AddSingleton<IEventBus>(sp => new AzureEventHubsEventBus(
+            config.GetConnectionString("EventHubs")!,
+            config["EventBus:HubName"] ?? "events"));
+        RegisterHandlers(services, assembly);
+        return services;
+    }
+
+    private static void RegisterHandlers(IServiceCollection services, Assembly assembly)
+    {
+        assembly.GetTypes()
+            .Where(t => !t.IsAbstract && t.GetInterfaces()
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>)))
+            .SelectMany(t => t.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IIntegrationEventHandler<>))
+                .Select(i => new { Interface = i, Implementation = t }))
+            .ToList()
+            .ForEach(x => services.AddScoped(x.Interface, x.Implementation));
     }
 }
