@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Anima.Blueprint.EventBus;
+namespace Anima.Blueprint.BuildingBlocks.Infrastructure.EventBus;
 
 public sealed class AzureStorageQueueEventBus : IEventBus
 {

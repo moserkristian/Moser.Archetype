@@ -25,7 +25,7 @@ public static class EventBusExtensions
         IConfiguration config,
         Assembly assembly)
     {
-        services.AddSingleton<IEventBus>(sp => new Blueprint.EventBus.AzureStorageQueueEventBus(
+        services.AddSingleton<IEventBus>(sp => new AzureStorageQueueEventBus(
             config.GetConnectionString("StorageQueue")!,
             config["EventBus:QueueName"] ?? "events"));
         RegisterHandlers(services, assembly);
@@ -37,7 +37,7 @@ public static class EventBusExtensions
         IConfiguration config,
         Assembly assembly)
     {
-        services.AddSingleton<IEventBus>(sp => new AzureServiceBus(
+        services.AddSingleton<IEventBus>(sp => new AzureServiceBusEventBus(
             config.GetConnectionString("ServiceBus")!,
             config["EventBus:TopicName"] ?? "events"));
         RegisterHandlers(services, assembly);
