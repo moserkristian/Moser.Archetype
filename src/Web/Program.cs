@@ -1,14 +1,11 @@
-using Moser.Archetype.Components;
 using Moser.Archetype.Web;
-using Moser.Archetype.Web.Abstractions;
-using Moser.Archetype.Web.Hubs;
-using Moser.Archetype.Web.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using System;
+using Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,15 +31,6 @@ builder.Services.AddHttpClient<CatalogApiClient>(client =>
     }
 });
 
-builder.Services.AddSingleton<IRemoteAccessTransport, DemoTransport>();
-
-/*builder.Services.AddSignalR()
-    .AddAzureSignalR(options =>
-    {
-        options.ConnectionString = builder.Configuration["Azure:SignalR:ConnectionString"];
-    });*/
-
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -53,9 +41,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-//app.MapHub<AgentsHub>("/hubs/agents");
-//app.MapHub<AdminHub>("/hubs/admin");
 
 app.UseStaticFiles();
 app.UseAntiforgery();

@@ -13,4 +13,12 @@
     <ProjectReference Include="..\Orchestration\ServiceDefaults\ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Hubs\" />
+    <Folder Include="Models\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
